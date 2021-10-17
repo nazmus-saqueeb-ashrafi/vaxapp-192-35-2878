@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="{% url 'patients:patient-list' %}">Go back to patients list</a>
+<hr />
+<h1>Are you sure you want to delete this patient?</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+{% endblock content %}
