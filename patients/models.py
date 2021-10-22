@@ -11,9 +11,14 @@ AGE_GROUP_CHOICES = (
     ('65+', '65+'),
 )
 
-PATIENT_TYPE_CHOICES = (
+PATIENT_MATERNAL_STATUS = (
     ('Pregnant', 'Pregnant'),
     ('Not Pregnant', 'Not Pregnant'),
+)
+
+PATIENT_SMOKING_STATUS = (
+    ('Smoker', 'Smoker'),
+    ('Non smoker', 'Non smoker'),
 )
 
 PATIENT_GENDER_CHOICES = (
@@ -45,7 +50,9 @@ SESSION_STATUS = (
 
 
 class User(AbstractUser):
-    pass
+    is_organisor = models.BooleanField(default=True)
+    is_vaccinator = models.BooleanField(default=False)
+    is_patient = models.BooleanField(default=False)
 
 
 class UserProfile(models.Model):
@@ -59,17 +66,21 @@ class UserProfile(models.Model):
 
 # Leads
 class Patient(models.Model):
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     patient_first_name = models.CharField(max_length=100)
     patient_last_name = models.CharField(max_length=100)
+    patient_email = models.EmailField(max_length=70)
+    patient_username = models.CharField(max_length=100)
 
     # patient_age_group = models.CharField(
     #     choices=AGE_GROUP_CHOICES, max_length=100)
 
     patient_age = models.IntegerField()
-    patient_type = models.CharField(
-        choices=PATIENT_TYPE_CHOICES, max_length=100)
+    patient_maternal_status = models.CharField(
+        choices=PATIENT_MATERNAL_STATUS, max_length=100)
+    patient_smoking_status = models.CharField(
+        choices=PATIENT_SMOKING_STATUS, max_length=100)
     patient_gender = models.CharField(
         choices=PATIENT_GENDER_CHOICES, max_length=100)
     patient_status = models.CharField(
@@ -78,10 +89,14 @@ class Patient(models.Model):
         choices=PATIENT_JOB_STATUS, max_length=100)
     patient_NID = models.IntegerField()
 
-    patient_session = models.ForeignKey("Session", on_delete=models.CASCADE)
+    # patient_session = models.ForeignKey("Session", on_delete=models.CASCADE)
+    patient_vaccinator = models.ForeignKey(
+        "Vaccinator", null=True, blank=True, on_delete=models.SET_NULL)
+
+    organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.patient_first_name} {self.patient_last_name}"
+        return self.patient_first_name
 
 
 # Catagory !

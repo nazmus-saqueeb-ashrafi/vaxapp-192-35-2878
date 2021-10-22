@@ -6,6 +6,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views import generic
 
+from vaccinators.mixins import OrganisorAndLoginRequiredMixin
+
+import random
+
+from patients.models import User
+
 # Create your views here.
 
 
@@ -35,8 +41,24 @@ class LandingPageView(generic.TemplateView):
 
 class PatientListView(LoginRequiredMixin, generic.ListView):
     template_name = "patients/patient_list.html"
-    queryset = Patient.objects.all()
+
     context_object_name = "patients"
+
+    def get_queryset(self):
+        user = self.request.user
+        # initial queryset of patient for the entire organisation
+        if user.is_organisor:
+            queryset = Patient.objects.filter(organisation=user.userprofile)
+        elif user.is_vaccinator:
+            queryset = Patient.objects.filter(
+                organisation=user.vaccinator.organisation)
+            # filter for the vaccinator that is logged in
+            queryset = queryset.filter(patient_vaccinator__user=user)
+        else:
+            queryset = Patient.objects.all()
+            queryset = Patient.objects.filter(user_id=user.id)
+
+        return queryset
 
 
 # def patient_details(request, pk):
@@ -50,9 +72,23 @@ class PatientListView(LoginRequiredMixin, generic.ListView):
 
 
 class PatientDetailView(LoginRequiredMixin, generic.DetailView):
+    # TODO: OrganisorAndVaccinatorandLoginRequiredMixin
+
     template_name = "patients/patient_details.html"
-    queryset = Patient.objects.all()
+
     context_object_name = "patient"
+
+    def get_queryset(self):
+        user = self.request.user
+        # initial queryset of leads for the entire organisation
+        if user.is_organisor:
+            queryset = Patient.objects.filter(organisation=user.userprofile)
+        else:
+            queryset = Patient.objects.filter(
+                organisation=user.vaccinator.organisation)
+            # filter for the agent that is logged in
+            queryset = queryset.filter(patient_vaccinator__user=user)
+        return queryset
 
 
 # def patient_create(request):
@@ -72,12 +108,46 @@ class PatientDetailView(LoginRequiredMixin, generic.DetailView):
 #     return render(request, "patients/patient_create.html", context)
 
 
-class PatientCreateView(LoginRequiredMixin, generic.CreateView):
+class PatientCreateView(OrganisorAndLoginRequiredMixin, generic.CreateView):
     template_name = "patients/patient_create.html"
     form_class = PatientModelForm
 
     def get_success_url(self):
         return reverse("patients:patient-list")
+
+    def form_valid(self, form):
+        patient = form.save(commit=False)
+
+        user = User.objects.create(
+
+            email=patient.patient_email,
+            username=patient.patient_email,
+            first_name=patient.patient_first_name,
+            last_name=patient.patient_last_name,
+
+            is_vaccinator=False,
+            is_organisor=False,
+            is_patient=True,
+
+            password=f"{random.randint(0, 1000000)}"
+        )
+
+        patient.organisation = self.request.user.userprofile
+        patient.user = user
+        patient.patient_status = "Unassigned"
+
+        # user.set_password(f"{random.randint(0, 1000000)}")
+
+        patient.save()
+
+        # send_mail(
+        #     subject="You were registered as a patient",
+        #     message="You were added as an patient at Vax App. Please come login to check your status.",
+        #     from_email="admin@test.com",
+        #     recipient_list=[user.email]
+        # )
+
+        return super(PatientCreateView, self).form_valid(form)
 
 
 # def patient_update(request, pk):
@@ -100,10 +170,15 @@ class PatientCreateView(LoginRequiredMixin, generic.CreateView):
 #     return render(request, "patients/patient_update.html", context)
 
 
-class PatientUpdateView(LoginRequiredMixin, generic.UpdateView):
+class PatientUpdateView(OrganisorAndLoginRequiredMixin, generic.UpdateView):
     template_name = "patients/patient_update.html"
-    queryset = Patient.objects.all()
+
     form_class = PatientModelForm
+
+    def get_queryset(self):
+        # initial queryset of leads for the entire organisation
+        user = self.request.user
+        return Patient.objects.filter(organisation=user.userprofile)
 
     def get_success_url(self):
         return reverse("patients:patient-list")
@@ -116,9 +191,13 @@ class PatientUpdateView(LoginRequiredMixin, generic.UpdateView):
 #     return redirect("/patients")
 
 
-class PatientDeleteView(LoginRequiredMixin, generic.DeleteView):
+class PatientDeleteView(OrganisorAndLoginRequiredMixin, generic.DeleteView):
     template_name = "patients/patient_delete.html"
-    queryset = Patient.objects.all()
+
+    def get_queryset(self):
+        # initial queryset of leads for the entire organisation
+        user = self.request.user
+        return Patient.objects.filter(organisation=user.userprofile)
 
     def get_success_url(self):
         return reverse("patients:patient-list")

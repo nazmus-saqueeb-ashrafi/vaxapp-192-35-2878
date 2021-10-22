@@ -1,10 +1,16 @@
 from django import forms
-from patients.models import Vaccinator
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
+
+User = get_user_model()
 
 
 class VaccinatorModelForm(forms.ModelForm):
     class Meta:
-        model = Vaccinator
+        model = User
         fields = (
-            'user',
+            'email',
+            'username',
+            'first_name',
+            'last_name',
         )
