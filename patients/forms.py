@@ -1,7 +1,7 @@
 from django import forms
 from django.db import models
 from django.forms import fields
-from .models import Patient, PATIENT_MATERNAL_STATUS, PATIENT_SMOKING_STATUS, PATIENT_GENDER_CHOICES, PATIENT_STATUS, PATIENT_JOB_STATUS
+from .models import Patient, PATIENT_MATERNAL_STATUS, PATIENT_SMOKING_STATUS, PATIENT_GENDER_CHOICES, PATIENT_STATUS, PATIENT_JOB_STATUS, Vaccinator
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UsernameField
@@ -35,3 +35,14 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ("username",)
         field_classes = {'username': UsernameField}
+
+
+class AssignVaccinatorForm(forms.Form):
+    vaccinator = forms.ModelChoiceField(queryset=Vaccinator.objects.none())
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop("request")
+        vaccinators = Vaccinator.objects.filter(
+            organisation=request.user.userprofile)
+        super(AssignVaccinatorForm, self).__init__(*args, **kwargs)
+        self.fields["vaccinator"].queryset = vaccinators

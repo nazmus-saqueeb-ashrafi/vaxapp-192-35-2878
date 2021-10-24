@@ -89,9 +89,10 @@ class Patient(models.Model):
         choices=PATIENT_JOB_STATUS, max_length=100)
     patient_NID = models.IntegerField()
 
-    # patient_session = models.ForeignKey("Session", on_delete=models.CASCADE)
     patient_vaccinator = models.ForeignKey(
         "Vaccinator", null=True, blank=True, on_delete=models.SET_NULL)
+    patient_session = models.ForeignKey(
+        "Session", null=True, blank=True, on_delete=models.SET_NULL)
 
     organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
@@ -109,6 +110,8 @@ class Session(models.Model):
 
     session_vaccinator = models.ForeignKey(
         "Vaccinator", on_delete=models.CASCADE)
+    organisation = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.session_name

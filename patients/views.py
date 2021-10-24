@@ -1,7 +1,7 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, reverse
-from .models import Patient
-from .forms import PatientModelForm, CustomUserCreationForm
+from .models import Patient, Vaccinator
+from .forms import PatientModelForm, CustomUserCreationForm, AssignVaccinatorForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views import generic
@@ -48,7 +48,8 @@ class PatientListView(LoginRequiredMixin, generic.ListView):
         user = self.request.user
         # initial queryset of patient for the entire organisation
         if user.is_organisor:
-            queryset = Patient.objects.filter(organisation=user.userprofile)
+            queryset = Patient.objects.filter(
+                organisation=user.userprofile, patient_vaccinator__isnull=False)
         elif user.is_vaccinator:
             queryset = Patient.objects.filter(
                 organisation=user.vaccinator.organisation)
@@ -59,6 +60,19 @@ class PatientListView(LoginRequiredMixin, generic.ListView):
             queryset = Patient.objects.filter(user_id=user.id)
 
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(PatientListView, self).get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_organisor:
+            queryset = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_vaccinator__isnull=True
+            )
+            context.update({
+                "unassigned_patients": queryset
+            })
+        return context
 
 
 # def patient_details(request, pk):
@@ -201,3 +215,29 @@ class PatientDeleteView(OrganisorAndLoginRequiredMixin, generic.DeleteView):
 
     def get_success_url(self):
         return reverse("patients:patient-list")
+
+
+class AssignVaccinatorView(OrganisorAndLoginRequiredMixin, generic.FormView):
+    template_name = "patients/assign_vaccinator.html"
+    form_class = AssignVaccinatorForm
+
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(AssignVaccinatorView, self).get_form_kwargs(**kwargs)
+        kwargs.update({
+            "request": self.request
+        })
+        return kwargs
+
+    def get_success_url(self):
+        return reverse("patients:patient-list")
+
+    def form_valid(self, form):
+        vaccinator = form.cleaned_data["vaccinator"]
+        patient = Patient.objects.get(id=self.kwargs["pk"])
+        patient.patient_vaccinator = vaccinator
+        patient.save()
+        return super(AssignVaccinatorView, self).form_valid(form)
+
+
+class UnassignVaccinator():
+    pass
