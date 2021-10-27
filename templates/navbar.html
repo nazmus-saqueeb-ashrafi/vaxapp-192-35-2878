@@ -16,6 +16,9 @@
           {% if request.user.is_organisor %}
             <a href="{% url 'vaccinators:vaccinator-list' %}" class="mr-5 hover:text-gray-900">Vaccinators</a>
           {% endif %}
+          {% if request.user.is_vaccinator %}
+          <a href="{% url 'session:session-list' %}" class="mr-5 hover:text-gray-900">Sessions</a>
+          {% endif %}
           <a href="{% url 'patients:patient-list' %}" class="mr-5 hover:text-gray-900">Patients</a>
         {% endif %}
       </nav>

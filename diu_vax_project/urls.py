@@ -22,6 +22,7 @@ urlpatterns = [
     path('', LandingPageView.as_view(), name='landing-page'),
     path('patients/', include('patients.urls', namespace="patients")),
     path('vaccinators/', include('vaccinators.urls', namespace="vaccinators")),
+    path('session/', include('session.urls', namespace="session")),
     path('signup/', SignupView.as_view(), name='signup'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),

@@ -9,3 +9,12 @@ class OrganisorAndLoginRequiredMixin(AccessMixin):
         if not request.user.is_authenticated or not request.user.is_organisor:
             return redirect("patients:patient-list")
         return super().dispatch(request, *args, **kwargs)
+
+
+class VaccinatorAndLoginRequiredMixin(AccessMixin):
+    """Verify that the current user is authenticated and is an vaccinator."""
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_vaccinator:
+            return redirect("patients:patient-list")
+        return super().dispatch(request, *args, **kwargs)

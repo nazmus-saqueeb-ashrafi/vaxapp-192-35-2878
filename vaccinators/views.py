@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import reverse
 from patients.models import Vaccinator
 from .forms import VaccinatorModelForm
-from .mixins import OrganisorAndLoginRequiredMixin
+from .mixins import OrganisorAndLoginRequiredMixin, VaccinatorAndLoginRequiredMixin
 
 import random
 
