@@ -1,7 +1,7 @@
 from django import forms
 from django.db import models
 from django.forms import fields
-from .models import Patient, PATIENT_MATERNAL_STATUS, PATIENT_SMOKING_STATUS, PATIENT_GENDER_CHOICES, PATIENT_STATUS, PATIENT_JOB_STATUS, Vaccinator
+from .models import Patient, Vaccinator
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UsernameField

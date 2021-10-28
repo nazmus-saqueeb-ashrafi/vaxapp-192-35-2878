@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="/session">Go back to all sessions</a>
+<h1>Create a session</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock content %}
