@@ -52,7 +52,7 @@ class PatientListView(LoginRequiredMixin, generic.ListView):
                 organisation=user.userprofile, patient_vaccinator__isnull=False)
         elif user.is_vaccinator:
             queryset = Patient.objects.filter(
-                organisation=user.vaccinator.organisation)
+                organisation=user.vaccinator.organisation, patient_session__isnull=False)
             # filter for the vaccinator that is logged in
             queryset = queryset.filter(patient_vaccinator__user=user)
         else:
@@ -71,6 +71,19 @@ class PatientListView(LoginRequiredMixin, generic.ListView):
             )
             context.update({
                 "unassigned_patients": queryset
+            })
+        return context
+
+    def get_context_data(self, **kwargs):
+        context = super(PatientListView, self).get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_vaccinator:
+            queryset = Patient.objects.filter(
+                patient_vaccinator=user.vaccinator,
+                patient_session__isnull=True
+            )
+            context.update({
+                "unassigned_session_patients": queryset
             })
         return context
 

@@ -12,3 +12,18 @@ class SessionModelForm(forms.ModelForm):
             'session_status',
 
         }
+
+
+class AssignSessionForm(forms.Form):
+    session = forms.ModelChoiceField(queryset=Session.objects.none())
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop("request")
+
+        user = request.user
+
+        sessions = Session.objects.filter(
+            session_vaccinator=user.vaccinator)
+
+        super(AssignSessionForm, self).__init__(*args, **kwargs)
+        self.fields["session"].queryset = sessions
