@@ -1,10 +1,12 @@
+from django.http import request
+from django.http.response import HttpResponse
 from django.views import generic
 from vaccinators.mixins import VaccinatorAndLoginRequiredMixin
-from patients.models import Session
+from patients.models import Session, Patient
 from .forms import SessionModelForm, AssignSessionForm
-from django.shortcuts import reverse
+from django.shortcuts import redirect, reverse
 
-from patients.models import Patient
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
@@ -16,11 +18,26 @@ class SessionListView(VaccinatorAndLoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         user = self.request.user
         queryset = Session.objects.filter(
-            organisation=user.vaccinator.organisation)
+            organisation=user.vaccinator.organisation,
+            session_status="Incomplete")
         # filter for the vaccinator that is logged in
         queryset = queryset.filter(session_vaccinator__user=user)
 
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(SessionListView, self).get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_vaccinator:
+            queryset = Session.objects.filter(
+                organisation=user.vaccinator.organisation,
+                session_status="Complete"
+            )
+            context.update({
+                "completed_sessions": queryset
+            })
+
+            return context
 
 
 class SessionCreateView(VaccinatorAndLoginRequiredMixin, generic.CreateView):
@@ -37,6 +54,7 @@ class SessionCreateView(VaccinatorAndLoginRequiredMixin, generic.CreateView):
 
         session.session_vaccinator = user.vaccinator
         session.organisation = user.vaccinator.organisation
+        session.session_status = "Incomplete"
 
         session.save()
 
@@ -99,6 +117,54 @@ class SessionAssignView(VaccinatorAndLoginRequiredMixin, generic.FormView):
         patient.patient_session = session
         patient.save()
         return super(SessionAssignView, self).form_valid(form)
+
+
+class SessionRunView(VaccinatorAndLoginRequiredMixin, generic.ListView):
+    template_name = "session/session_run.html"
+    context_object_name = "session_patients"
+
+    def get_queryset(self):
+        user = self.request.user
+
+        session = Session.objects.get(id=self.kwargs["pk"])
+        return Patient.objects.filter(patient_session=session)
+
+    def get_context_data(self, **kwargs):
+        context = super(SessionRunView, self).get_context_data(**kwargs)
+
+        context['session'] = Session.objects.get(id=self.kwargs["pk"])
+
+        return context
+
+    def get_success_url(self):
+        return reverse("patients:patient-list")
+
+
+def PatientComplete(request, pk):
+    patient = Patient.objects.get(pk=pk)
+    patient.patient_status = "Complete"
+
+    print(patient.patient_status)
+    patient.save()
+
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+
+def PatientIncomplete(request, pk):
+    patient = Patient.objects.get(pk=pk)
+    patient.patient_status = "Incomplete"
+    patient.save()
+
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+
+def SessionComplete(request, pk):
+
+    session = Session.objects.get(pk=pk)
+    session.session_status = "Complete"
+    session.save()
+
+    return redirect("session:session-list")
 
 
 # 2:44

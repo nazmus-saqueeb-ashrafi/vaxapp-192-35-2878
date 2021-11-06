@@ -72,11 +72,7 @@ class PatientListView(LoginRequiredMixin, generic.ListView):
             context.update({
                 "unassigned_patients": queryset
             })
-        return context
 
-    def get_context_data(self, **kwargs):
-        context = super(PatientListView, self).get_context_data(**kwargs)
-        user = self.request.user
         if user.is_vaccinator:
             queryset = Patient.objects.filter(
                 patient_vaccinator=user.vaccinator,
@@ -161,7 +157,7 @@ class PatientCreateView(OrganisorAndLoginRequiredMixin, generic.CreateView):
 
         patient.organisation = self.request.user.userprofile
         patient.user = user
-        patient.patient_status = "Unassigned"
+        patient.patient_status = "Incomplete"
 
         # user.set_password(f"{random.randint(0, 1000000)}")
 

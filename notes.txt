@@ -1,0 +1,15 @@
+Commit 7 - More work on slots
+
+- Features ------------------------------------
+
+- run slots: list patients, tick off patients, complete slots
+- complete slots/incomplete slots view
+- cannot run complete slots, slots without patients
+- show only slots which are incomplete when assigning sessions to patient
+- view slot details for patient when patient logs in
+
+
+- Bugs ---------------------------------------
+
+- forgot password, should show error when wrong email entered,
+- in login page username label should be replaced by email ?

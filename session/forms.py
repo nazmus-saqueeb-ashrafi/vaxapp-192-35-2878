@@ -9,7 +9,7 @@ class SessionModelForm(forms.ModelForm):
             'session_name',
             'session_date',
             'session_time',
-            'session_status',
+
 
         }
 
@@ -24,6 +24,8 @@ class AssignSessionForm(forms.Form):
 
         sessions = Session.objects.filter(
             session_vaccinator=user.vaccinator)
+        sessions = sessions.filter(
+            session_status="Incomplete")
 
         super(AssignSessionForm, self).__init__(*args, **kwargs)
         self.fields["session"].queryset = sessions

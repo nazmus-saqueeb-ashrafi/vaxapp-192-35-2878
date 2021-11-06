@@ -27,8 +27,7 @@ PATIENT_GENDER_CHOICES = (
 )
 
 PATIENT_STATUS = (
-    ('Assigned', 'Assigned'),
-    ('Unassigned', 'Unassigned'),
+    ('Incomplete', 'Incomplete'),
     ('Complete', 'Complete'),
 )
 
