@@ -1,3 +1,28 @@
+Commit 8 - 
+
+- Features ------------------------------------
+
+- create statistics view for organizer
+- total percent of the population vaccinated/smoker/pregnant/employed
+
+-generate chart for complete vs incomplete/vaccinated/smoker/pregnant/employed
+-generate scatter plot for age
+
+
+
+- Bugs ---------------------------------------
+
+- forgot password, should show error when wrong email entered,
+- in login page username label should be replaced by email ?
+- edit patients - shows all vaccinator from all organization when we want to assign a vaccinator. We want only vaccinator of current organization.
+- if male, pregnant option should not exist, auto maek as non pregnant.
+
+- vaccinator update
+- delete vaccinator does not delete vaccinator from 'users' table in db
+
+
+
+-------------------------------------------------------------------------------------------
 Commit 7 - More work on slots
 
 - Features ------------------------------------

@@ -70,8 +70,8 @@ class VaccinatorUpdateView(OrganisorAndLoginRequiredMixin, generic.UpdateView):
         return reverse("vaccinators:vaccinator-list")
 
     def get_queryset(self):
-        organisation = self.request.user.userprofile
-        return Vaccinator.objects.filter(organisation=organisation)
+        user = self.request.user
+        return Vaccinator.objects.filter(organisation=user.userprofile)
 
 
 class VaccinatorDeleteView(OrganisorAndLoginRequiredMixin, generic.DeleteView):

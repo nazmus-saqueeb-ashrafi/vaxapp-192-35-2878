@@ -12,6 +12,9 @@ import random
 
 from patients.models import User
 
+import json
+from django.core import serializers
+
 # Create your views here.
 
 
@@ -250,3 +253,88 @@ class AssignVaccinatorView(OrganisorAndLoginRequiredMixin, generic.FormView):
 
 class UnassignVaccinator():
     pass
+
+
+class StatisticsView(LoginRequiredMixin, generic.ListView):
+    template_name = "patients/statistics.html"
+
+    context_object_name = "all_patients"
+
+    def get_queryset(self):
+        user = self.request.user
+        # initial queryset of patient for the entire organisation
+        if user.is_organisor:
+            queryset = Patient.objects.filter(
+                organisation=user.userprofile)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(StatisticsView, self).get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_organisor:
+            queryset = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_status="Incomplete"
+            )
+            context.update({
+                "incomplete_patients": queryset
+            })
+
+            context['complete_patients'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_status="Complete")
+            context['smoking_patients'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_smoking_status="Smoker")
+
+            context['smoking_patients_completed'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_smoking_status="Smoker",
+                patient_status="Complete")
+            context['nonsmoking_patients_completed'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_smoking_status="Non smoker",
+                patient_status="Complete")
+
+            context['pregnant_patients_completed'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_maternal_status="Pregnant",
+                patient_status="Complete")
+            context['notpregnant_patients_completed'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_maternal_status="Not Pregnant",
+                patient_status="Complete")
+
+            context['male_patients_completed'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_gender="Male",
+                patient_status="Complete")
+            context['female_patients_completed'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_gender="Female",
+                patient_status="Complete")
+
+            context['employed_patients_completed'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_job_status="Employed",
+                patient_status="Complete")
+            context['unemployed_patients_completed'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_job_status="Unemployed",
+                patient_status="Complete")
+            context['student_patients_completed'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_job_status="Student",
+                patient_status="Complete")
+            context['retired_patients_completed'] = Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_job_status="Retired",
+                patient_status="Complete")
+
+            context['age_completed'] = serializers.serialize('json', Patient.objects.filter(
+                organisation=user.userprofile,
+                patient_status="Complete"
+            ))
+
+        return context
