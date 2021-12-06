@@ -5,6 +5,10 @@ from .forms import PatientModelForm, CustomUserCreationForm, AssignVaccinatorFor
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views import generic
+from django.http import HttpResponseRedirect
+from django.contrib.auth import logout
+from django.conf import settings
+
 
 from vaccinators.mixins import OrganisorAndLoginRequiredMixin
 
@@ -25,6 +29,11 @@ class SignupView(generic.CreateView):
     def get_success_url(self):
         return reverse("login")
 
+
+class LogoutView(generic.View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(settings.LOGIN_URL)
 
 # def landing_page(request):
 #     return render(request, "landing.html")
@@ -53,11 +62,22 @@ class PatientListView(LoginRequiredMixin, generic.ListView):
         if user.is_organisor:
             queryset = Patient.objects.filter(
                 organisation=user.userprofile, patient_vaccinator__isnull=False)
+
+            query = self.request.GET.get('q')
+            if query:
+                queryset = Patient.objects.filter(
+                    patient_first_name=query, organisation=user.userprofile)
+
         elif user.is_vaccinator:
             queryset = Patient.objects.filter(
                 organisation=user.vaccinator.organisation, patient_session__isnull=False)
             # filter for the vaccinator that is logged in
             queryset = queryset.filter(patient_vaccinator__user=user)
+
+            query = self.request.GET.get('q')
+            if query:
+                queryset = Patient.objects.filter(
+                    patient_first_name=query, patient_vaccinator__user=user)
         else:
             queryset = Patient.objects.all()
             queryset = Patient.objects.filter(user_id=user.id)

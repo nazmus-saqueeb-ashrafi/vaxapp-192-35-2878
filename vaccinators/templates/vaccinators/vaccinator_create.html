@@ -1,12 +1,25 @@
-{% extends "base.html" %}
+
+
+
+{% extends 'base.html' %}
+{% load tailwind_filters %}
 
 {% block content %}
-<a href="{% url 'vaccinators:vaccinator-list' %}">Go back to vaccinators</a>
-<hr />
-<h1>Create a new vaccinator</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+
+<div class="max-w-lg mx-auto">
+    <a href="{% url 'vaccinators:vaccinator-list' %}" class="hover:text-indigo-500">Go back to all vaccinators</a>
+    <hr />
+    <h1 class="text-4xl text-gray-800">Create a new vaccinator</h1>
+    <form method="post" class="mt-5">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type='submit' class="w-full text-white bg-indigo-500 hover:bg-indigo-600 px-3 py-2 rounded-md">
+            Submit
+        </button>
+        <br>
+        <br>
+    </form>
+
+</div>
+
 {% endblock content %}

@@ -5,17 +5,17 @@
     <div class="container px-5 py-24 mx-auto flex flex-wrap">
         <div class="w-full mb-6 py-6 flex justify-between items-center border-b border-gray-200">
             <div>
-                <h1 class="text-4xl text-gray-800">Sessions</h1>
+                <h1 class="text-4xl text-gray-800">Slots</h1>
             </div>
             <div>
                 <a class="text-gray-500 hover:text-blue-500" href="{% url 'session:session-create' %}">Create a
                     new
-                    session</a>
+                    slot</a>
             </div>
         </div>
         <div class="flex flex-wrap -m-4">
             <div class="p-4 w-full">
-                <h1 class="text-4xl text-gray-800">Incomplete sessions</h1>
+                <h1 class="text-4xl text-gray-800">Incomplete slots</h1>
             </div>
             
             {% for session in object_list %}
@@ -25,10 +25,65 @@
             <div class="p-4 lg:w-1/2 md:w-full">
                 <div class="flex border-2 rounded-lg border-gray-200 p-8 sm:flex-row flex-col">
                     <div
-                        class="w-16 h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 flex-shrink-0">
-                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" class="w-8 h-8" viewBox="0 0 24 24">
-                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        class="w-16 h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-red-100 text-indigo-500 flex-shrink-0">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                            y="0px" viewBox="0 0 512.005 512.005" style="enable-background:new 0 0 512.005 512.005;" xml:space="preserve">
+                            <g transform="translate(-1 -1)">
+                                <path style="fill:#687492;" d="M9.681,513.004c-2.248,0-4.495-0.868-6.196-2.603c-3.358-3.419-3.306-8.912,0.121-12.271
+                        		l116.406-114.193c3.402-3.358,8.895-3.306,12.271,0.121c3.358,3.419,3.306,8.912-0.121,12.271L15.755,510.522
+                        		C14.072,512.18,11.876,513.004,9.681,513.004" />
+                                <polygon style="fill:#BDC3C7;" points="432.895,107.862 402.21,77.176 457.437,21.95 488.122,52.635 	" />
+                                <polygon style="fill:#E4F4F9;" points="193.582,383.993 132.22,322.631 389.939,64.904 451.301,126.275 	" />
+                                <path style="fill:#ECF0F1;" d="M463.579,147.22c-2.222,0-4.443-0.85-6.135-2.543L371.54,58.774c-3.393-3.393-3.393-8.886,0-12.271
+                        		c3.384-3.393,8.878-3.393,12.271,0l85.903,85.903c3.393,3.393,3.393,8.878,0,12.271C468.022,146.369,465.801,147.22,463.579,147.22
+                        		" />
+                                <path style="fill:#26B99A;" d="M131.657,395.703l-11.143-11.151c-3.705-3.697-3.705-9.693,0-13.39l30.113-30.121l24.55,24.541
+                        		l-30.121,30.121C141.359,399.4,135.354,399.4,131.657,395.703" />
+                                <polygon style="fill:#B0D3F0;" points="324.909,252.665 202.186,252.665 132.224,322.627 193.586,383.989 	" />
+                                <g>
+                                    <path style="fill:#90BAE1;" d="M359.265,95.589l24.541,24.55c1.692,1.692,3.914,2.543,6.135,2.543c2.222,0,4.443-0.85,6.135-2.543
+                        			c3.393-3.393,3.393-8.886,0-12.271l-24.541-24.55l0,0L359.265,95.589L359.265,95.589z" />
+                                    <path style="fill:#90BAE1;" d="M359.265,144.678c1.692,1.692,3.914,2.543,6.135,2.543c2.222,0,4.443-0.85,6.135-2.543
+                        			c3.393-3.393,3.393-8.886,0-12.271l-24.55-24.541l-12.271,12.271L359.265,144.678z" />
+                                    <path style="fill:#90BAE1;" d="M334.715,169.225c1.692,1.692,3.914,2.543,6.135,2.543c2.222,0,4.443-0.85,6.135-2.543
+                        			c3.393-3.384,3.393-8.878,0-12.271l-24.541-24.55l-12.271,12.271L334.715,169.225z" />
+                                    <path style="fill:#90BAE1;" d="M285.629,169.225l24.541,24.541c1.692,1.692,3.914,2.543,6.135,2.543s4.443-0.85,6.135-2.543
+                        			c3.393-3.384,3.393-8.878,0-12.271L297.9,156.954l0,0L285.629,169.225L285.629,169.225z" />
+                                </g>
+                                <path style="fill:#ECF0F1;"
+                                    d="M504.325,77.517c-2.222,0-4.443-0.85-6.135-2.543L439.04,15.816c-3.393-3.384-3.393-8.878,0-12.271
+                        		c3.384-3.393,8.878-3.393,12.271,0l59.149,59.158c3.393,3.393,3.393,8.878,0,12.271C508.768,76.666,506.546,77.517,504.325,77.517" />
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
                         </svg>
                     </div>
                     <div class="flex-grow">
@@ -36,11 +91,13 @@
                             {{ session.session_name }}
                         </h2>
                         <p class="leading-relaxed text-base">
-                            Blue bottle crucifix vinyl post-ironic four dollar toast vegan taxidermy. Gastropub indxgo
-                            juice poutine.
+                            Date: {{ session.session_date }}
+                        </p>
+                        <p class="leading-relaxed text-base">
+                            Time: {{ session.session_time }}
                         </p>
                         <a href="{% url 'session:session-detail' session.pk %}" class="mt-3 text-indigo-500 inline-flex items-center">
-                            View this session
+                            View this slot
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 class="w-4 h-4 ml-2" viewBox="0 0 24 24">
                                 <path d="M5 12h14M12 5l7 7-7 7"></path>
@@ -53,7 +110,7 @@
             {% endfor %}
 
             <div class="p-4 w-full">
-                <h1 class="text-4xl text-gray-800">Complete sessions</h1>
+                <h1 class="text-4xl text-gray-800">Complete slots</h1>
             </div>
 
             {% if completed_sessions.exists %}
@@ -63,10 +120,65 @@
                 <div class="p-4 lg:w-1/2 md:w-full">
                     <div class="flex border-2 rounded-lg border-gray-200 p-8 sm:flex-row flex-col">
                         <div
-                            class="w-16 h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 flex-shrink-0">
-                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                class="w-8 h-8" viewBox="0 0 24 24">
-                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            class="w-16 h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-green-100 text-indigo-500 flex-shrink-0">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                                y="0px" viewBox="0 0 512.005 512.005" style="enable-background:new 0 0 512.005 512.005;" xml:space="preserve">
+                                <g transform="translate(-1 -1)">
+                                    <path style="fill:#687492;" d="M9.681,513.004c-2.248,0-4.495-0.868-6.196-2.603c-3.358-3.419-3.306-8.912,0.121-12.271
+                            		l116.406-114.193c3.402-3.358,8.895-3.306,12.271,0.121c3.358,3.419,3.306,8.912-0.121,12.271L15.755,510.522
+                            		C14.072,512.18,11.876,513.004,9.681,513.004" />
+                                    <polygon style="fill:#BDC3C7;" points="432.895,107.862 402.21,77.176 457.437,21.95 488.122,52.635 	" />
+                                    <polygon style="fill:#E4F4F9;" points="193.582,383.993 132.22,322.631 389.939,64.904 451.301,126.275 	" />
+                                    <path style="fill:#ECF0F1;" d="M463.579,147.22c-2.222,0-4.443-0.85-6.135-2.543L371.54,58.774c-3.393-3.393-3.393-8.886,0-12.271
+                            		c3.384-3.393,8.878-3.393,12.271,0l85.903,85.903c3.393,3.393,3.393,8.878,0,12.271C468.022,146.369,465.801,147.22,463.579,147.22
+                            		" />
+                                    <path style="fill:#26B99A;" d="M131.657,395.703l-11.143-11.151c-3.705-3.697-3.705-9.693,0-13.39l30.113-30.121l24.55,24.541
+                            		l-30.121,30.121C141.359,399.4,135.354,399.4,131.657,395.703" />
+                                    <polygon style="fill:#B0D3F0;" points="324.909,252.665 202.186,252.665 132.224,322.627 193.586,383.989 	" />
+                                    <g>
+                                        <path style="fill:#90BAE1;" d="M359.265,95.589l24.541,24.55c1.692,1.692,3.914,2.543,6.135,2.543c2.222,0,4.443-0.85,6.135-2.543
+                            			c3.393-3.393,3.393-8.886,0-12.271l-24.541-24.55l0,0L359.265,95.589L359.265,95.589z" />
+                                        <path style="fill:#90BAE1;" d="M359.265,144.678c1.692,1.692,3.914,2.543,6.135,2.543c2.222,0,4.443-0.85,6.135-2.543
+                            			c3.393-3.393,3.393-8.886,0-12.271l-24.55-24.541l-12.271,12.271L359.265,144.678z" />
+                                        <path style="fill:#90BAE1;" d="M334.715,169.225c1.692,1.692,3.914,2.543,6.135,2.543c2.222,0,4.443-0.85,6.135-2.543
+                            			c3.393-3.384,3.393-8.878,0-12.271l-24.541-24.55l-12.271,12.271L334.715,169.225z" />
+                                        <path style="fill:#90BAE1;" d="M285.629,169.225l24.541,24.541c1.692,1.692,3.914,2.543,6.135,2.543s4.443-0.85,6.135-2.543
+                            			c3.393-3.384,3.393-8.878,0-12.271L297.9,156.954l0,0L285.629,169.225L285.629,169.225z" />
+                                    </g>
+                                    <path style="fill:#ECF0F1;"
+                                        d="M504.325,77.517c-2.222,0-4.443-0.85-6.135-2.543L439.04,15.816c-3.393-3.384-3.393-8.878,0-12.271
+                            		c3.384-3.393,8.878-3.393,12.271,0l59.149,59.158c3.393,3.393,3.393,8.878,0,12.271C508.768,76.666,506.546,77.517,504.325,77.517" />
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
+                                <g>
+                                </g>
                             </svg>
                         </div>
                         <div class="flex-grow">
@@ -74,12 +186,14 @@
                                 {{ session.session_name }}
                             </h2>
                             <p class="leading-relaxed text-base">
-                                Blue bottle crucifix vinyl post-ironic four dollar toast vegan taxidermy. Gastropub indxgo
-                                juice poutine.
+                                Date: {{ session.session_date }}
+                            </p>
+                            <p class="leading-relaxed text-base">
+                                Time: {{ session.session_time }}
                             </p>
                             <a href="{% url 'session:session-detail' session.pk %}"
                                 class="mt-3 text-indigo-500 inline-flex items-center">
-                                View this session
+                                View this slot
                                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     class="w-4 h-4 ml-2" viewBox="0 0 24 24">
                                     <path d="M5 12h14M12 5l7 7-7 7"></path>
