@@ -1,3 +1,6 @@
+Commit 9 - Minor change 1
+- implemented a student-id display in intro page
+
 
 Commit 9 - Aesthetics and search function
 
@@ -15,7 +18,8 @@ Commit 9 - Aesthetics and search function
 - forgot password, should show error when wrong email entered,
 - in login page username label should be replaced by email ?
 - edit patients - shows all vaccinator from all organization when we want to assign a vaccinator. We want only vaccinator of current organization.
-- if male, pregnant option should not exist, auto maek as non pregnant.
+
+- if male, pregnant option should not exist, auto make as non pregnant.
 
 - vaccinator update
 - delete vaccinator does not delete vaccinator from 'users' table in db
