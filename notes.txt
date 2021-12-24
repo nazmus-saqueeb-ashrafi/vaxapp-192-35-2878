@@ -1,4 +1,10 @@
-Commit 9 - Minor change 1
+Commit 10 - Test added 
+
+- test added for create patient form
+- test added for landing page
+
+Commit 10 - Minor change 1
+
 - implemented a student-id display in intro page
 
 
@@ -15,9 +21,9 @@ Commit 9 - Aesthetics and search function
 
 - Bugs ---------------------------------------
 
-- forgot password, should show error when wrong email entered,
 - in login page username label should be replaced by email ?
 - edit patients - shows all vaccinator from all organization when we want to assign a vaccinator. We want only vaccinator of current organization.
+- forgot password, should show error when wrong email entered,
 
 - if male, pregnant option should not exist, auto make as non pregnant.
 
